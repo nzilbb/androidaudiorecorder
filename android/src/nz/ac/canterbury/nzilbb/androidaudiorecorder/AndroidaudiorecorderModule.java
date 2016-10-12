@@ -159,7 +159,10 @@ public class AndroidaudiorecorderModule extends KrollModule
 		//bufferSizeInBytes *= 1024;
 		try
 		{
-			recorder = new AudioRecord(audioSource, sampleRateInHz, channelConfig, audioFormat, bufferSizeInBytes);
+			if (recorder == null)
+			{
+				recorder = new AudioRecord(audioSource, sampleRateInHz, channelConfig, audioFormat, bufferSizeInBytes);
+			}
 			channelCount = recorder.getChannelCount();
 			sampleRate = recorder.getSampleRate();
 			bitCount = recorder.getAudioFormat()==android.media.AudioFormat.ENCODING_PCM_8BIT?8:16;
@@ -184,7 +187,7 @@ public class AndroidaudiorecorderModule extends KrollModule
 		try
 		{
 			Log.d(LCAT, "writeAudioDataToFile");
-			if (audioFile != null && recorder != null)
+			if (audioFile != null && recorder != null && recordingThread != null)
 			{
 				byte data[] = new byte[bufferSizeInBytes];
 	
@@ -199,17 +202,20 @@ public class AndroidaudiorecorderModule extends KrollModule
 					e.printStackTrace();
 				}
 	
-				while (audioFile != null && recorder != null) 
+				while (audioFile != null && recorder != null && recordingThread != null) 
 				{
 					int iRead = recorder.read(data, 0, bufferSizeInBytes);
 					Log.d(LCAT, "writeAudioDataToFile read " + iRead);
-					try 
+					if (iRead > 0)
 					{
-						os.write(data, 0, iRead);
-					} 
-					catch (IOException e) 
-					{
-						e.printStackTrace();
+						try 
+						{
+							os.write(data, 0, iRead);
+						} 
+						catch (IOException e) 
+						{
+							e.printStackTrace();
+						}
 					}
 				}
 				Log.d(LCAT, "writeAudioDataToFile closing");
@@ -243,8 +249,9 @@ public class AndroidaudiorecorderModule extends KrollModule
 		if (null != recorder) 
 		{
 	        recorder.stop();
-	        recorder.release();
-	        recorder = null;
+	        //recorder.release();
+	        //recorder = null;
+	        recordingThread = null;
 	        while (recordingThread != null)
 	        { // wait for thread to finish
 	        	try { Thread.sleep(100); } catch (Exception x) {}
@@ -322,7 +329,7 @@ public class AndroidaudiorecorderModule extends KrollModule
 	@Kroll.method
 	public boolean getRecording()
 	{
-		return recorder != null;
+		return /*recorder*/recordingThread != null;
 	}
 
 
