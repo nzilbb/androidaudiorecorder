@@ -2,17 +2,17 @@
 # this is your module manifest and used by Titanium
 # during compilation, packaging, distribution, etc.
 #
-version: 1.0.0
-apiversion: 2
-architectures: armeabi armeabi-v7a x86
-description: androidaudiorecorder
-author: Your Name
-license: Specify your license
-copyright: Copyright (c) 2015 by Your Company
+version: 1.1.0
+apiversion: 4
+architectures: arm64-v8a armeabi-v7a x86
+description: Android Audio Recorder
+author: Robert Fromont
+license: GPL
+copyright: Copyright (c) 2015 New Zealand Institute of Language, Brain and Behaviour
 
 # these should not be edited
 name: androidaudiorecorder
 moduleid: nz.ac.canterbury.nzilbb.androidaudiorecorder
 guid: a6d5321a-8d12-417d-9d96-b821d104ccc5
 platform: android
-minsdk: 3.5.1.GA
+minsdk: 7.0.0

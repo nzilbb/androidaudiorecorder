@@ -43,6 +43,7 @@ public class AndroidaudiorecorderModule extends KrollModule
 	public AndroidaudiorecorderModule()
 	{
 		super();
+		Log.d(LCAT, "AndroidaudiorecorderModule constructor");
 	}
 
 	@Kroll.onAppCreate
@@ -53,29 +54,7 @@ public class AndroidaudiorecorderModule extends KrollModule
 	}
 
 	// Methods
-	/*
-	@Kroll.method
-	public String example()
-	{
-		Log.d(LCAT, "example called");
-		return "hello world";
-	}
-
-	// Properties
-	@Kroll.getProperty
-	public String getExampleProp()
-	{
-		Log.d(LCAT, "get example property");
-		return "hello world";
-	}
-
-
-	@Kroll.setProperty
-	public void setExampleProp(String value) {
-		Log.d(LCAT, "set example property: " + value);
-	}
-	*/
-
+   
 	/**
 	 * Starts recording a file. Default settings are used:
 	 * <ul>
@@ -88,6 +67,7 @@ public class AndroidaudiorecorderModule extends KrollModule
 	@Kroll.method
 	public boolean start()
 	{
+		Log.d(LCAT, "AndroidaudiorecorderModule.start()...");
 		return start(-1,-1,-1,-1);
 	}
 	/**
@@ -110,7 +90,7 @@ public class AndroidaudiorecorderModule extends KrollModule
 		try
 		{
 			audioFile = File.createTempFile("AudioRecorder-", ".pcm", TiFileFactory.getDataDirectory(true));
-			Log.e(LCAT, "AndroidaudiorecorderModule: file: " + audioFile.getPath());
+			Log.d(LCAT, "AndroidaudiorecorderModule: file: " + audioFile.getPath());
 		}
 		catch (Exception x)
 		{
@@ -233,7 +213,7 @@ public class AndroidaudiorecorderModule extends KrollModule
 		{
 			// we're finished
 			recordingThread = null;
-			Log.e(LCAT, "writeAudioDataToFile finished");
+			Log.d(LCAT, "writeAudioDataToFile finished");
 		}
 	}
 
@@ -245,7 +225,7 @@ public class AndroidaudiorecorderModule extends KrollModule
 	@Kroll.method
 	public String stop()
 	{
-		Log.e(LCAT, "AndroidaudiorecorderModule: stop()");
+		Log.d(LCAT, "AndroidaudiorecorderModule: stop()");
 		if (null != recorder) 
 		{
 	        recorder.stop();
@@ -256,9 +236,9 @@ public class AndroidaudiorecorderModule extends KrollModule
 	        { // wait for thread to finish
 	        	try { Thread.sleep(100); } catch (Exception x) {}
 	        }
-	        Log.e(LCAT, "File: " + audioFile.getPath() + " " + audioFile.exists());
+	        Log.d(LCAT, "File: " + audioFile.getPath() + " " + audioFile.exists());
 	        audioFile = addWavHeader(audioFile);
-	        Log.e(LCAT, "File: " + audioFile.getPath() + " " + audioFile.exists());
+	        Log.d(LCAT, "File: " + audioFile.getPath() + " " + audioFile.exists());
 			return audioFile.getName();
 	    }
 		else
